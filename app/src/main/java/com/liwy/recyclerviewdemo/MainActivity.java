@@ -9,12 +9,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 public class MainActivity extends Activity implements View.OnClickListener{
     private RecyclerView recyclerView;
@@ -44,7 +47,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
         btnStaggered.setOnClickListener(this);
         initData();
         recyclerView = (RecyclerView)findViewById(R.id.recycler_main);
-//        recyclerView.setHasFixedSize(true);
         recyclerAdapter = new RecyclerAdapter(list,context);
         /**
          * 设置item的点击事件
@@ -57,7 +59,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
             @Override
             public void onLongClick(View view, int position) {
-                showToastShort(list.get(position).getContent());
+                showToastShort("删除了" + list.get(position).getContent());
+                // 长点击删除
+                recyclerAdapter.notifyItemRemoved(position);
+                Log.e(TAG, "删除后的长度=" + recyclerAdapter.getItemCount());
             }
         });
         recyclerView.setAdapter(recyclerAdapter);
